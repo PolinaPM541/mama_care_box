@@ -2,3 +2,6 @@
 /venv/
 *__pycache__/
 venv/
+alembic.ini
+migrations/env.py
+migrations/script.py.mako
