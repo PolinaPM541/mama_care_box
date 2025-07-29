@@ -31,35 +31,6 @@ FastAPI-додаток для товарів для мам та немовлят
 
 4. Відкрийте API: [http://localhost:9000/docs](http://localhost:9000/docs)
 
-## 💻 Локальний запуск
-
-1. Створіть та активуйте віртуальне середовище:
-   ```bash
-   python -m venv venv
-   # Windows: venv\Scripts\activate
-   # macOS/Linux: source venv/bin/activate
-   ```
-
-2. Встановіть залежності:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Налаштуйте базу даних:
-   - **PostgreSQL**: `DATABASE_URL=postgresql+asyncpg://postgres:your_password@localhost:5432/mama_care_box`
-   - **SQLite**: `DATABASE_URL=sqlite+aiosqlite:///./mama_care_box.db` та `pip install aiosqlite`
-
-4. Виконайте міграції:
-   ```bash
-   alembic revision --autogenerate -m "Initial migration"
-   alembic upgrade head
-   ```
-
-5. Запустіть сервер:
-   ```bash
-   uvicorn main:app --reload --port 9000
-   ```
-
 ## 📚 API Документація
 
 
@@ -98,45 +69,11 @@ mama_care_box/
 └── .env               # Змінні середовища
 ```
 
-## ⚙️ Конфігурація
-
-### Змінні середовища (.env)
-
-```bash
-# База даних
-DATABASE_URL=postgresql+asyncpg://user:password@host:port/dbname
-
-# Google OAuth (опційно)
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-
-# JWT секрет (у auth.py)
-SECRET=your_jwt_secret_key
-```
-
-### Docker Compose
-
-Файл `docker-compose.yml` налаштовано для:
-- **web**: FastAPI додаток на порту 9000
-- **db**: PostgreSQL 13 на порту 5432
-- **volumes**: Збереження даних БД
-
-
-## 📝 Ліцензія
-
-MIT License
-
-## 👨‍💻 Автор
-
-InvisUA-creator
-
----
-
 ## 🚀 Швидкий старт
 
 ```bash
 # 1. Клонування
-git clone https://github.com/InvisUA-creator/mama_care_box.git
+git clone https://github.com/PolinaPM541/mama_care_box.git
 cd mama_care_box
 
 # 2. Створення .env
