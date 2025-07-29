@@ -12,9 +12,8 @@ FastAPI-додаток для товарів для мам та немовлят
 
 1. Клонуйте репозиторій:
    ```bash
-   git clone
-   https://github.com/PolinaPM541/mama_care_box.git
-   cd mama_care_box
+   git clone https://github.com/PolinaPM541/mama_care_box.git
+>> cd mama_care_box
    ```
 
 2. Створіть `.env`:
