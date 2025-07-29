@@ -1,34 +1,52 @@
 services:
   web:
-    build: .
-    command: uvicorn main:app --host 0.0.0.0 --port 9000 --reload
-    volumes:
-      - .:/app
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "9000:9000"
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://postgres:123456*@db:5432/mama_care_box
-    env_file:
-      - .env
+    command: >
+      sh -c "sleep 5 && alembic upgrade head && gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:9000"
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
 
   db:
     image: postgres:13
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=123456*
-      - POSTGRES_DB=mama_care_box
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mama_care_box
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
 
 volumes:
-  postgres_data:
+  db_data:
+
+
+networks:
+  app-network:
+    driver: bridge
