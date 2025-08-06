@@ -8,13 +8,18 @@ from sqlalchemy import insert
 
 from httpx import AsyncClient,ASGITransport
 
-
+from app.database import async_session_maker, engine, Base
+from core.config import settings
+from models.user import User
+from main import app as fastapi_app
 
 @pytest.fixture(scope="session",autouse=True)
 async def repare_database():
+
     """
-    create test database
+    create conn test database
     """
+
     assert settings.MODE == 'TEST'
 
     async with engine.begin() as conn:
@@ -32,7 +37,7 @@ async def repare_database():
     async with async_session_maker() as session:
         for Model, values in [
 
-            (Users, users),
+            (User, users),
         ]:
             query = insert(Model).values(values)
             await session.execute(query)
