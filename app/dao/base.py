@@ -1,0 +1,2 @@
+class BaseDao:
+    model = None

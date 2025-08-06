@@ -6,7 +6,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = mapped_column(Integer, primary_key=True, index=True)
-    google_id = mapped_column(String, unique=True, index=True, nullable=True)  # ID від Google
+    google_id = mapped_column(String, unique=True, index=True, nullable=True)
     email = mapped_column(String, unique=True, index=True, nullable=False)
     username = mapped_column(String, nullable=True)
     hashed_password = mapped_column(String, nullable=False)
