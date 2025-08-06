@@ -1,9 +1,11 @@
-from pydantic import BaseModel
 from datetime import datetime
+
+from pydantic import BaseModel
 
 
 class OrderCreate(BaseModel):
     total_amount: float
+
 
 class OrderResponse(BaseModel):
     id: int

@@ -1,8 +1,5 @@
-from datetime import datetime
-import uuid
-from sqlalchemy import Boolean, DECIMAL, ForeignKey, Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import DECIMAL, ForeignKey, Integer, String
+from sqlalchemy.orm import mapped_column, relationship
 
 from models.base import Base
 
@@ -14,8 +11,8 @@ class Category(Base):
     name = mapped_column(String, nullable=False)
     description = mapped_column(String, nullable=False)
 
-    subcategories = relationship("Subcategory",back_populates="category")
-    product = relationship("Product",back_populates="category")
+    subcategories = relationship("Subcategory", back_populates="category")
+    product = relationship("Product", back_populates="category")
 
     async def to_dict(self):
         return {
@@ -23,6 +20,7 @@ class Category(Base):
             "name": self.name,
             "description": self.description,
         }
+
 
 class Subcategory(Base):
     __tablename__ = "subcategory"
@@ -32,8 +30,8 @@ class Subcategory(Base):
     description = mapped_column(String, nullable=False)
     category_id = mapped_column(Integer, ForeignKey("category.category_id"))
 
-    category = relationship("Category",back_populates="subcategories")
-    product = relationship("Product",back_populates="subcategory")
+    category = relationship("Category", back_populates="subcategories")
+    product = relationship("Product", back_populates="subcategory")
 
     async def to_dict(self):
         return {
@@ -42,7 +40,8 @@ class Subcategory(Base):
             "description": self.description,
             "category_id": self.category_id,
         }
-    
+
+
 class Product(Base):
     __tablename__ = "product"
 
@@ -53,8 +52,8 @@ class Product(Base):
     category_id = mapped_column(Integer, ForeignKey("category.category_id"))
     subcategory_id = mapped_column(Integer, ForeignKey("subcategory.subcategory_id"))
 
-    category = relationship("Category",back_populates="product")
-    subcategory = relationship("Subcategory",back_populates="product")
+    category = relationship("Category", back_populates="product")
+    subcategory = relationship("Subcategory", back_populates="product")
 
     async def to_dict(self):
         return {

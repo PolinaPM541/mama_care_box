@@ -5,8 +5,10 @@ class Basket(BaseModel):
     product_id: int
     quantity: int
 
+
 class BasketCreate(Basket):
     pass
+
 
 class BasketResponse(Basket):
     id: int

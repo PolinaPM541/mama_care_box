@@ -1,21 +1,30 @@
 from fastapi import Depends
 from fastapi_users import FastAPIUsers
-from fastapi_users.authentication import AuthenticationBackend, BearerTransport, JWTStrategy
+from fastapi_users.authentication import (
+    AuthenticationBackend,
+    BearerTransport,
+    JWTStrategy,
+)
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.user import User
+
 from models.base import async_session
+from models.user import User
+
 
 # Налаштування бази даних
 async def get_user_db(session: AsyncSession = Depends(async_session)):
     yield SQLAlchemyUserDatabase(session, User)
 
+
 # Налаштування JWT
-SECRET = "your_jwt_secret"  
+SECRET = "your_jwt_secret"
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
+
 
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+
 
 jwt_auth_backend = AuthenticationBackend(
     name="jwt",

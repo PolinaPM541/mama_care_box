@@ -1,6 +1,7 @@
-from sqlalchemy import Float, DateTime, ForeignKey, Integer
-from sqlalchemy.sql import func
+from sqlalchemy import DateTime, Float, ForeignKey, Integer
 from sqlalchemy.orm import mapped_column
+from sqlalchemy.sql import func
+
 from models.base import Base
 
 

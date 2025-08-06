@@ -1,15 +1,11 @@
-from logging.config import fileConfig
-from sqlalchemy.ext.asyncio import create_async_engine
-from core.config import settings
-from models.base import Base
-from models.user import User
-from models.product import Product, Category, Subcategory
-from models.basket import Basket
-from models.order import Order
-from sqlalchemy import engine_from_config, pool
 import asyncio
+from logging.config import fileConfig
 
 from alembic import context
+from sqlalchemy.ext.asyncio import create_async_engine
+
+from core.config import settings
+from models.base import Base
 
 # this is the Alembic Config object
 config = context.config

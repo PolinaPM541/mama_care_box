@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class UserBase(BaseModel):
@@ -17,7 +17,6 @@ class UserRead(UserBase):
 class UserCreate(UserBase):
     password: str
     google_id: str | None = None
-
 
 
 class UserInDB(UserBase):

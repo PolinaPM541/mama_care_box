@@ -9,6 +9,6 @@ class ProductService:
 
     async def create_product(self, product: ProductSchema) -> Product:
         return await self.product_repository.create(product)
-    
+
     async def get_product_by_id(self, product_id: int) -> Product | None:
         return await self.product_repository.get_by_id(product_id)

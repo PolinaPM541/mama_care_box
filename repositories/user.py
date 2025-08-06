@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+
 from models.user import User
 from schemas.user import UserCreate
 
@@ -18,11 +19,11 @@ class UserRepository:
 
     async def create(self, user: UserCreate) -> User:
         db_user = User(
-            google_id=user.google_id, 
-            email=user.email, 
+            google_id=user.google_id,
+            email=user.email,
             username=user.username,
-            hashed_password=user.password
-            )
+            hashed_password=user.password,
+        )
         self.session.add(db_user)
         await self.session.commit()
         await self.session.refresh(db_user)

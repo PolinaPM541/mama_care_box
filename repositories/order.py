@@ -1,6 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from models.order import Order
 from schemas.order import OrderCreate
+
 
 class OrderRepository:
     def __init__(self, session: AsyncSession):
