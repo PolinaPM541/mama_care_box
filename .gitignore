@@ -3,5 +3,5 @@
 *__pycache__/
 venv/
 alembic.ini
-migrations/env.py
-migrations/script.py.mako
+app/migrations/env.py
+app/migrations/script.py.mako

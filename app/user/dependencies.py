@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from fastapi import Depends, Request
 from jose import JWTError, jwt
 
+from app.config import settings
 from app.exceptions import (
     IncorrectTokenFormaException,
     TokeAbsentException,
@@ -11,7 +12,6 @@ from app.exceptions import (
 )
 from app.user.dao import UsersDao
 from app.user.models import User
-from core.config import settings
 
 
 def get_token(request: Request):

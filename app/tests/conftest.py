@@ -5,8 +5,8 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import insert
 
+from app.config import settings
 from app.database import Base, async_session_maker, engine
-from core.config import settings
 from main import app as fastapi_app
 from models.user import User
 

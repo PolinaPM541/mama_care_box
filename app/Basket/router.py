@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
 router = APIRouter(
-    prefix="/product",
-    tags=["product"],
+    prefix="/basket",
+    tags=["basket"],
 )
