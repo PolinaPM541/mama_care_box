@@ -1,4 +1,6 @@
-from sqlalchemy import DECIMAL, DateTime, Float, ForeignKey, Integer, String, func
+from datetime import date
+
+from sqlalchemy import DECIMAL, Date, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -7,7 +9,7 @@ from app.database import Base
 class Product(Base):
     __tablename__ = "product"
 
-    product_id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=False)
     price: Mapped[DECIMAL] = mapped_column(DECIMAL, nullable=False)
@@ -29,6 +31,4 @@ class Order(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     total_amount: Mapped[float] = mapped_column(Float, nullable=False)
-    created_at: Mapped["datetime"] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[date] = mapped_column(Date, nullable=False)
