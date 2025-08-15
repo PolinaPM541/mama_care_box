@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -11,10 +11,7 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_ID: str = "test_client_id"
     GOOGLE_CLIENT_SECRET: str = "test_client_secret"
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        extra = "ignore"
+    model_config = SettingsConfigDict(env_file=".env")
 
 
 settings = Settings()

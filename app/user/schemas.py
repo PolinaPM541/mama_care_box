@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class UserBase(BaseModel):
-    google_id: str
+    google_id: str | None = None
     email: EmailStr
     username: str | None = None
     is_active: bool
@@ -11,18 +11,15 @@ class UserBase(BaseModel):
 
 
 class UserRead(UserBase):
-    is_active: bool
+    pass
 
 
 class UserCreate(UserBase):
     password: str
-    google_id: str | None = None
 
 
 class UserInDB(UserBase):
     hashed_password: str
-    is_active: bool
-    google_id: str | None = None
 
 
 class UserLogin(BaseModel):

@@ -6,10 +6,9 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from models.base import async_session
 from models.user import User
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 # Налаштування бази даних

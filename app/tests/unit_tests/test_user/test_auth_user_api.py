@@ -5,8 +5,8 @@ from httpx import AsyncClient
 @pytest.mark.parametrize(
     "email,password,is_active,status_code",
     [
-        ("kot@pes.com", "kotopes", True, 200),
-        ("kot@pes.com", "kotOpes", True, 409),
+        ("kot@pes.com", "kot0pes", True, 200),
+        ("kot@pes.com", "kot0pes", True, 409),
         ("pes@pes.com", "pesokot", True, 200),
         ("abvsda", "pesokot", True, 422),
     ],
@@ -14,7 +14,7 @@ from httpx import AsyncClient
 async def test_register_user(email, password, is_active, status_code, ac: AsyncClient):
     response = await ac.post(
         "/user/register",
-        json={"email": email, "password": password, is_active: is_active},
+        json={"email": email, "password": password, "is_active": is_active},
     )
 
     assert response.status_code == status_code

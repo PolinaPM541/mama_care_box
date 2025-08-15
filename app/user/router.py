@@ -1,4 +1,4 @@
-from typing import Annotated, Any
+from typing import Any
 
 from fastapi import APIRouter, Depends, Response
 
@@ -24,9 +24,8 @@ router = APIRouter(
 )
 
 
-#
 @router.get("/me", response_model=UserRead)
-async def get_me(user: User = Annotated[UserRead, Depends(get_current_user)]) -> Any:
+async def get_me(user: User = Depends(get_current_user)) -> Any:
     """
     get user info
 
@@ -42,7 +41,7 @@ async def get_me(user: User = Annotated[UserRead, Depends(get_current_user)]) ->
     return existing_user
 
 
-@router.post("register", response_model=UserRead)
+@router.post("/register", response_model=UserRead)
 async def register_user(new_user: UserCreate) -> Any:
     """
     register new user
@@ -53,16 +52,19 @@ async def register_user(new_user: UserCreate) -> Any:
         user
     """
 
-    existing_user = await UsersDao.find_by_id(new_user.id)
+    existing_user = await UsersDao.find_one_or_none(email=new_user.email)
     if existing_user:
         raise UserHasExist
     new_user.password = get_password_hash(new_user.password)
-    user = await UsersDao.add(**new_user.model_dump())
-    print(user)
+    user = await UsersDao.add_user(
+        email=new_user.email,
+        hashed_password=new_user.password,
+    )
+    print("user", user)
     return user
 
 
-@router.post("/login", response_model=UserRead)
+@router.post("/login", response_model=UserRead, operation_id="login_user_endpoint")
 async def login_user(response: Response, user_data: UserLogin) -> Any:
     """
     login user
@@ -72,7 +74,7 @@ async def login_user(response: Response, user_data: UserLogin) -> Any:
     return:
         access_token
     """
-    user = await authenticate_user(user_data.emal, user_data.password)
+    user = await authenticate_user(**user_data.model_dump())
     if not user:
         raise IncorrectEmailOrPasswordException
     refresh_token = create_refresh_token({"sub": user.id})
