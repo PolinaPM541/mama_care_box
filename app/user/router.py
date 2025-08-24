@@ -1,86 +1,36 @@
-from typing import Any
+from fastapi import APIRouter
 
-from fastapi import APIRouter, Depends, Response
+from app.user.auth import bearer_backend, cookie_backend, fastapi_users
+from app.user.schemas import UserCreate, UserRead, UserUpdate
 
-from app.exceptions import (
-    IncorrectEmailOrPasswordException,
-    UserHasExist,
-    UserHasNotExist,
-)
-from app.user.auth import (
-    authenticate_user,
-    create_access_token,
-    create_refresh_token,
-    get_password_hash,
-)
-from app.user.dao import UsersDao
-from app.user.dependencies import get_current_user
-from app.user.models import User
-from app.user.schemas import UserCreate, UserLogin, UserRead
+router = APIRouter()
 
-router = APIRouter(
-    prefix="/user",
-    tags=["user"],
+
+router.include_router(
+    fastapi_users.get_auth_router(cookie_backend), prefix="/auth/cookie", tags=["auth"]
 )
 
+router.include_router(
+    fastapi_users.get_auth_router(bearer_backend), prefix="/auth/jwt", tags=["auth"]
+)
 
-@router.get("/me", response_model=UserRead)
-async def get_me(user: User = Depends(get_current_user)) -> Any:
-    """
-    get user info
-
-    param:
-        user
-    return:
-        existing_user
-    """
-
-    existing_user = await UsersDao.find_by_id(user.id)
-    if not existing_user:
-        raise UserHasNotExist
-    return existing_user
-
-
-@router.post("/register", response_model=UserRead)
-async def register_user(new_user: UserCreate) -> Any:
-    """
-    register new user
-
-    param:
-        new_user
-    return
-        user
-    """
-
-    existing_user = await UsersDao.find_one_or_none(email=new_user.email)
-    if existing_user:
-        raise UserHasExist
-    new_user.password = get_password_hash(new_user.password)
-    user = await UsersDao.add_user(
-        email=new_user.email,
-        hashed_password=new_user.password,
-    )
-    print("user", user)
-    return user
-
-
-@router.post("/login", response_model=UserRead, operation_id="login_user_endpoint")
-async def login_user(response: Response, user_data: UserLogin) -> Any:
-    """
-    login user
-
-    param:
-        user_data
-    return:
-        access_token
-    """
-    user = await authenticate_user(**user_data.model_dump())
-    if not user:
-        raise IncorrectEmailOrPasswordException
-    refresh_token = create_refresh_token({"sub": user.id})
-    response.set_cookie(
-        "token", value=refresh_token, httponly=True, secure=True, samesite="strict"
-    )
-
-    access_token = create_access_token({"sub": user.id})
-    return access_token
+router.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
+router.include_router(
+    fastapi_users.get_reset_password_router(),
+    prefix="/auth",
+    tags=["auth"],
+)
+router.include_router(
+    fastapi_users.get_verify_router(UserRead),
+    prefix="/auth",
+    tags=["auth"],
+)
+router.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)

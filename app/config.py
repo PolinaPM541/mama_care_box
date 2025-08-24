@@ -8,6 +8,10 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     TEST_DATABASE_URL: str
 
+    SECRETS: str
+    COOKIE_MAX_AGE: int
+    JWT_LIFETIME_SECONDS: int
+
     GOOGLE_CLIENT_ID: str = "test_client_id"
     GOOGLE_CLIENT_SECRET: str = "test_client_secret"
 

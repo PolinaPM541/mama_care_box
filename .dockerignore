@@ -4,5 +4,6 @@ __pycache__
 *.pyd
 .git
 .env
+
 venv
 *.md

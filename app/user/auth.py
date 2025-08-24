@@ -1,48 +1,44 @@
-from datetime import datetime, timedelta, timezone
-
-from jose import jwt
-from passlib.context import CryptContext
+from fastapi_users import FastAPIUsers
+from fastapi_users.authentication import (
+    AuthenticationBackend,
+    BearerTransport,
+    CookieTransport,
+    JWTStrategy,
+)
 
 from app.config import settings
-from app.user.dao import UsersDao
+from app.user.dependencies import get_user_manager
+from app.user.models import Users
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
-
-
-def verify_password(plain_password, hashed_password) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+cookie_transport = CookieTransport(
+    cookie_name="auth_cookie", cookie_max_age=settings.COOKIE_MAX_AGE * 7
+)
+bearer_transport = BearerTransport(tokenUrl="auth/login")
 
 
-def create_token(data: dict, secret_key: str, expiration_time: timedelta) -> str:
-
-    to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + expiration_time
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=settings.ALGORITHM)
-    return encoded_jwt
-
-
-def create_access_token(data: dict) -> str:
-    return create_token(
-        data, settings.SECRET_KEY_ACCESS, timedelta(minutes=settings.ACCESS_TIME_TOKEN)
+def get_jwt_strategy() -> JWTStrategy:
+    return JWTStrategy(
+        secret=settings.SECRETS, lifetime_seconds=settings.JWT_LIFETIME_SECONDS
     )
 
 
-def create_refresh_token(data: dict) -> str:
-    return create_token(
-        data,
-        settings.SECRET_KEY_REFRESH,
-        timedelta(days=settings.REFRESH_TOKEN_EXPIRATION),
-    )
+cookie_backend = AuthenticationBackend(
+    name="Cookie",
+    transport=cookie_transport,
+    get_strategy=get_jwt_strategy,
+)
 
 
-async def authenticate_user(email, password: str):
+bearer_backend = AuthenticationBackend(
+    name="Bearer",
+    transport=bearer_transport,
+    get_strategy=get_jwt_strategy,
+)
 
-    user = await UsersDao.find_one_or_none(email=email)
-    if not user and not verify_password(password, user.password):
-        return None
-    return user
+
+fastapi_users = FastAPIUsers[Users, int](
+    get_user_manager,
+    [cookie_backend, bearer_backend],
+)
+
+current_user = fastapi_users.current_user()

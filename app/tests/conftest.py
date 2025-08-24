@@ -11,7 +11,7 @@ from app.config import settings
 from app.database import Base, async_session_maker, engine
 from app.Product.Categories.models import Category, Subcategory
 from app.Product.models import Order, Product
-from app.user.models import User
+from app.user.models import Users
 from main import app as fastapi_app
 
 
@@ -46,7 +46,7 @@ async def repare_database():
             (Category, category),
             (Subcategory, subcategory),
             (Product, product),
-            (User, users),
+            (Users, users),
             (Basket, basket),
             (Order, orders),
         ]:

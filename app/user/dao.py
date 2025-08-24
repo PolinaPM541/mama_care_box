@@ -1,19 +1,15 @@
-from sqlalchemy import insert
+from fastapi import Depends
+from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dao.base import BaseDao
-from app.database import async_session_maker
+from app.database import get_async_session
+from app.user.models import Users
 
-from .models import User
 
-
-class UsersDao(BaseDao):
-    model = User
+class UserDao(BaseDao):
+    model = Users
 
     @classmethod
-    async def add_user(cls, **data):
-        async with async_session_maker() as session:
-            query = insert(cls.model).values(**data).returning(cls.model)
-            result = await session.execute(query)
-            await session.commit()
-            new_user = result.scalar()
-            return new_user
+    async def get_user_db(self, session: AsyncSession = Depends(get_async_session)):
+        yield SQLAlchemyUserDatabase(session, Users)
