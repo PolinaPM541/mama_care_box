@@ -18,9 +18,6 @@ class Basket(Base):
     order_items: Mapped[list["OrderItem"]] = relationship(back_populates="basket")
     orders: Mapped["Order"] = relationship(back_populates="basket", uselist=False)
 
-    def __str__(self):
-        return f"basket: {self.order_items}"
-
 
 class Order(Base):
     __tablename__ = "orders"
@@ -29,7 +26,6 @@ class Order(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
     basket_id: Mapped[int] = mapped_column(ForeignKey("basket.id"), nullable=False)
     total_cost: Mapped[float] = mapped_column(nullable=False)
-    total_quantity: Mapped[int] = mapped_column(nullable=False)
     created_at: Mapped[date] = mapped_column(Date, nullable=False)
 
     basket: Mapped["Basket"] = relationship(back_populates="orders")

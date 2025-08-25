@@ -6,11 +6,11 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import insert
 
-from app.Basket.models import Basket
+from app.Basket.models import Basket, Order, OrderItem
+from app.Categories.models import Category, Subcategory
 from app.config import settings
 from app.database import Base, async_session_maker, engine
-from app.Product.Categories.models import Category, Subcategory
-from app.Product.models import Order, Product
+from app.Product.models import Product
 from app.user.models import Users
 from main import app as fastapi_app
 
@@ -36,6 +36,7 @@ async def repare_database():
     category = open_mock_json("category")
     subcategory = open_mock_json("subcategory")
     orders = open_mock_json("order")
+    orders_item = open_mock_json("order_item")
     product = open_mock_json("product")
 
     for order in orders:
@@ -49,6 +50,7 @@ async def repare_database():
             (Users, users),
             (Basket, basket),
             (Order, orders),
+            (OrderItem, orders_item),
         ]:
             query = insert(Model).values(values)
             await session.execute(query)

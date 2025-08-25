@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.Basket.router import router as basket_router
-from app.Product.Categories.router import router as category_router
+from app.Categories.router import router as category_router
 from app.Product.router import router as product_router
 from app.user.router import router as user_router
 

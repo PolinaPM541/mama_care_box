@@ -3,7 +3,6 @@
     "name": "1954",
     "description": "book for read",
     "price": 100,
-    "category_id": 1,
     "subcategory_id": 1
   }
 ]
