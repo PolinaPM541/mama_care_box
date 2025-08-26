@@ -1,9 +1,7 @@
-from typing import List
-
 from fastapi import APIRouter, Depends
 
 from app.Basket.dao import BasketDao
-from app.Basket.schemas import BasketRead, OrderItemRead
+from app.Basket.schemas import BasketRead
 from app.exceptions import NotFoundHTTPException, UnexpectedHTTPException
 from app.user.auth import current_user
 from app.user.models import Users
@@ -43,23 +41,22 @@ async def add_basket(user: Users = Depends(current_user)):
 
 @router.get(
     "/",
-    response_model=list[OrderItemRead],
     responses={
         404: {"description": "Not Found"},
-        500: {"description": " Internal Server Error"},
+        500: {"description": "Internal Server Error"},
     },
 )
 async def get_basket(user: Users = Depends(current_user)):
     """
     get basket
     :param: user
-    :return OrderItem
+    :return basket
     """
     try:
-        basket = await BasketDao.find_by_id(user.id)
+        basket = await BasketDao.get_basket_order_item(user.id)
         if not basket:
             raise NotFoundHTTPException
-        return basket.order_items
+        return basket
 
-    except Exception:
-        raise UnexpectedHTTPException
+    except Exception as e:
+        print(e)

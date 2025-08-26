@@ -1,16 +1,16 @@
 from pydantic import BaseModel
 
 
-class Basket(BaseModel):
+class BasketRead(BaseModel):
     product_id: int
     quantity: int
 
 
-class BasketCreate(Basket):
+class BasketCreate(BasketRead):
     pass
 
 
-class BasketResponse(Basket):
+class BasketResponse(BasketRead):
     id: int
     user_id: int
 
