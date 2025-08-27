@@ -1,8 +1,11 @@
-from fastapi import APIRouter, Depends
+from typing import List
 
-from app.Basket.dao import BasketDao
-from app.Basket.schemas import BasketRead
+from fastapi import APIRouter, Depends, Request
+
+from app.Basket.dao import BasketDao, OrderDao, OrderItemDao
+from app.Basket.schemas import OrderItemRead, OrderRead
 from app.exceptions import NotFoundHTTPException, UnexpectedHTTPException
+from app.responses_api import responses
 from app.user.auth import current_user
 from app.user.models import Users
 
@@ -13,44 +16,39 @@ router = APIRouter(
 
 
 @router.post(
-    "/",
-    response_model=BasketRead,
-    responses={
-        200: {"description": "Basket successfully created"},
-        404: {"description": "Not Found"},
-        500: {"description": " Internal Server Error"},
-    },
+    "/in_basket",
 )
-async def add_basket(user: Users = Depends(current_user)):
+async def add_in_basket(
+    request: Request,
+    product_id: int,
+    quantity: int,
+    user: Users = Depends(current_user),
+):
     """
-        add in basket
+    add in basket
+
     :param: basket,user
     :return basket
     """
     try:
-        basket = await BasketDao.add(
-            user_id=user.id,
+        basket_item = await OrderItemDao.create_order_item(
+            user.id, product_id, quantity
         )
-        if not basket:
+        if not basket_item:
             raise NotFoundHTTPException
 
-        return basket
+        return basket_item
     except Exception:
         raise UnexpectedHTTPException
 
 
-@router.get(
-    "/",
-    responses={
-        404: {"description": "Not Found"},
-        500: {"description": "Internal Server Error"},
-    },
-)
-async def get_basket(user: Users = Depends(current_user)):
+@router.get("/with_basket", response_model=list[OrderItemRead], responses=responses)
+async def get_basket(user: Users = Depends(current_user)) -> list[OrderItemRead]:
     """
     get basket
+
     :param: user
-    :return basket
+    :return List[OrderItem]
     """
     try:
         basket = await BasketDao.get_basket_order_item(user.id)
@@ -59,4 +57,21 @@ async def get_basket(user: Users = Depends(current_user)):
         return basket
 
     except Exception as e:
-        print(e)
+        raise UnexpectedHTTPException
+
+
+@router.post("/order", response_model=OrderRead, responses=responses)
+async def create_order(user: Users = Depends(current_user)) -> OrderRead:
+    """
+    create order
+
+    :param: user
+    :return Order
+    """
+    try:
+        order = await OrderDao.create_order(user.id)
+        if not order:
+            raise NotFoundHTTPException
+        return order
+    except Exception:
+        raise UnexpectedHTTPException

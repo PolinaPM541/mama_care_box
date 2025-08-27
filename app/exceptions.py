@@ -13,3 +13,8 @@ NotFoundHTTPException = HTTPException(
 UnexpectedHTTPException = HTTPException(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Server Error"
 )
+
+EmptyBasketHTTPException = HTTPException(
+    status_code=status.HTTP_409_CONFLICT,
+    detail="Empty Basket was found",
+)

@@ -9,7 +9,7 @@ from app.database import Base
 class Basket(Base):
     __tablename__ = "basket"
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
 
     user: Mapped["Users"] = relationship(
@@ -22,7 +22,7 @@ class Basket(Base):
 class Order(Base):
     __tablename__ = "orders"
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
     basket_id: Mapped[int] = mapped_column(ForeignKey("basket.id"), nullable=False)
     total_cost: Mapped[float] = mapped_column(nullable=False)
@@ -30,6 +30,9 @@ class Order(Base):
 
     basket: Mapped["Basket"] = relationship(back_populates="orders")
     user: Mapped["Users"] = relationship(back_populates="orders")
+    order_items: Mapped[list["OrderItem"]] = relationship(
+        back_populates="order", lazy="selectin"
+    )
 
 
 class OrderItem(Base):
@@ -38,12 +41,15 @@ class OrderItem(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(nullable=False)
     price: Mapped[float] = mapped_column(nullable=False)
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"), nullable=False)
-    basket_id: Mapped[int] = mapped_column(ForeignKey("basket.id"), nullable=False)
     quantity: Mapped[int] = mapped_column(nullable=False, default=1)
     total_cost: Mapped[float] = mapped_column(Float, Computed("price*quantity"))
 
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"), nullable=False)
+    basket_id: Mapped[int] = mapped_column(ForeignKey("basket.id"), nullable=False)
+    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"), nullable=True)
+
     basket: Mapped["Basket"] = relationship(back_populates="order_items")
+    order: Mapped["Order"] = relationship(back_populates="order_items")
 
     def __str__(self):
         return f"order_item: name: {self.name}, price: {self.price}, product_id: {self.product_id}"

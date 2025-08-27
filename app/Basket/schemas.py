@@ -38,6 +38,7 @@ class OrderItemRead(BaseModel):
     name: str
     price: float
     quantity: int
+    total_cost: float
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -53,3 +54,7 @@ class OrderItemCreate(BaseModel):
 
 class OrderItemUpdate(OrderItemCreate):
     pass
+
+
+class OrderWithItems(BaseModel):
+    OrderItem: OrderItemRead
