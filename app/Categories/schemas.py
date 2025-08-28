@@ -3,7 +3,6 @@ from pydantic import BaseModel, ConfigDict
 
 class CategoryRead(BaseModel):
     name: str
-
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -17,7 +16,6 @@ class CategoryUpdate(CategoryRead):
 
 class SubCategoryRead(BaseModel):
     name: str
-    category_id: int
 
     model_config = ConfigDict(from_attributes=True)
 

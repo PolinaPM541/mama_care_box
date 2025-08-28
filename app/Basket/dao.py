@@ -42,7 +42,7 @@ class OrderDao(BaseDao):
             if len(basket) == 0:
                 raise EmptyBasketHTTPException
 
-            value = sum(item["total_cost"] for item in basket)
+            value = sum(item.total_cost for item in basket)
 
             query = (
                 insert(Order)

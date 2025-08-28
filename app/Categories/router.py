@@ -19,7 +19,7 @@ router = APIRouter(
         500: {"description": "Internal server error"},
     },
 )
-async def get_category(category_id) -> CategoryRead:
+async def get_category(category_id: int) -> CategoryRead:
     """
     Get a category by id
     :param category_id:
@@ -30,7 +30,8 @@ async def get_category(category_id) -> CategoryRead:
         if not category:
             raise NotFoundHTTPException
         return category
-    except Exception:
+    except Exception as e:
+        print(e)
         raise UnexpectedHTTPException
 
 
@@ -43,7 +44,7 @@ async def get_category(category_id) -> CategoryRead:
         500: {"description": "Internal server error"},
     },
 )
-async def get_subcategories(subcategory_id) -> SubCategoryRead:
+async def get_subcategories(subcategory_id: int) -> SubCategoryRead:
     """
     Get subcategory by id
     :param: subcategory_id
@@ -55,5 +56,6 @@ async def get_subcategories(subcategory_id) -> SubCategoryRead:
         if not subcategory:
             raise NotFoundHTTPException
         return subcategory
-    except Exception:
+    except Exception as e:
+        print(e)
         raise UnexpectedHTTPException

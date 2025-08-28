@@ -3,25 +3,20 @@ from httpx import AsyncClient
 
 
 @pytest.mark.parametrize(
-    "email,password,is_active,is_superuser,is_verified,status_code",
+    "email,password,status_code",
     [
-        ("kot@pes.com", "kot0pes", True, False, False, 201),
-        ("kot@pes.com", "kot0pes", True, False, False, 400),
-        ("pes@pes.com", "pesokot", True, False, False, 201),
-        ("abvsda", "pesokot", True, False, False, 422),
+        ("kot@pes.com", "kot0pes", 201),
+        ("kot@pes.com", "kot0pes", 400),
+        ("pes@pes.com", "pesokot", 201),
+        ("abvsda", "pesokot", 422),
     ],
 )
-async def test_register_user(
-    email, password, is_active, is_superuser, is_verified, status_code, ac: AsyncClient
-):
+async def test_register_user(email, password, status_code, ac: AsyncClient):
     response = await ac.post(
         "/auth/register",
         json={
             "email": email,
             "password": password,
-            "is_active": is_active,
-            "is_superuser": is_superuser,
-            "is_verified": is_verified,
         },
     )
 
@@ -31,14 +26,14 @@ async def test_register_user(
 @pytest.mark.parametrize(
     "email,password,status_code",
     [
-        ("test@test.com", "test", 200),
+        ("test@test.com", "test", 204),
     ],
 )
 async def test_login_user(email, password, status_code, ac: AsyncClient):
     response = await ac.post(
         "/auth/cookie/login",
-        json={
-            "email": email,
+        data={
+            "username": email,
             "password": password,
         },
     )

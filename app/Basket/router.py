@@ -1,9 +1,9 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends
 
 from app.Basket.dao import BasketDao, OrderDao, OrderItemDao
-from app.Basket.schemas import OrderItemRead, OrderRead
+from app.Basket.schemas import OrderItemCreate, OrderItemRead, OrderRead
 from app.exceptions import NotFoundHTTPException, UnexpectedHTTPException
 from app.responses_api import responses
 from app.user.auth import current_user
@@ -19,9 +19,7 @@ router = APIRouter(
     "/in_basket",
 )
 async def add_in_basket(
-    request: Request,
-    product_id: int,
-    quantity: int,
+    basket: OrderItemCreate,
     user: Users = Depends(current_user),
 ):
     """
@@ -32,7 +30,7 @@ async def add_in_basket(
     """
     try:
         basket_item = await OrderItemDao.create_order_item(
-            user.id, product_id, quantity
+            user.id, basket.product_id, basket.quantity
         )
         if not basket_item:
             raise NotFoundHTTPException

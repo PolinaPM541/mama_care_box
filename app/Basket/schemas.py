@@ -44,12 +44,8 @@ class OrderItemRead(BaseModel):
 
 
 class OrderItemCreate(BaseModel):
-    name: str
-    price: float
     product_id: int
-    basket_id: int
     quantity: int
-    total_cost: float
 
 
 class OrderItemUpdate(OrderItemCreate):
