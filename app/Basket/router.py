@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, Depends
 
 from app.Basket.dao import BasketDao, OrderDao, OrderItemDao
