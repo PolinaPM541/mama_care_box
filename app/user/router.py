@@ -19,11 +19,7 @@ router.include_router(
     prefix="/auth",
     tags=["auth"],
 )
-router.include_router(
-    fastapi_users.get_reset_password_router(),
-    prefix="/auth",
-    tags=["auth"],
-)
+
 router.include_router(
     fastapi_users.get_verify_router(UserRead),
     prefix="/auth",
