@@ -4,12 +4,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dao.base import BaseDao
 from app.database import get_async_session
-from app.user.models import Users
+from app.user.models import OAuthnAccount, Users
 
 
 class UserDao(BaseDao):
     model = Users
 
     @classmethod
-    async def get_user_db(self, session: AsyncSession = Depends(get_async_session)):
-        yield SQLAlchemyUserDatabase(session, Users)
+    async def get_user_db(cls, session: AsyncSession = Depends(get_async_session)):
+        yield SQLAlchemyUserDatabase(session, Users, OAuthnAccount)

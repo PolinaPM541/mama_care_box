@@ -12,8 +12,11 @@ class Settings(BaseSettings):
     COOKIE_MAX_AGE: int
     JWT_LIFETIME_SECONDS: int
 
-    GOOGLE_CLIENT_ID: str = "test_client_id"
-    GOOGLE_CLIENT_SECRET: str = "test_client_secret"
+    FACEBOOK_OAUTH2_CLIENT_ID: str
+    FACEBOOK_OAUTH2_CLIENT_SECRET: str
+
+    GOOGLE_OAUTH2_CLIENT_ID: str
+    GOOGLE_OAUTH2_CLIENT_SECRET: str
 
     model_config = SettingsConfigDict(env_file=".env")
 

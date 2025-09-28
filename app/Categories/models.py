@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -8,8 +8,8 @@ from app.Product.models import Product
 class Category(Base):
     __tablename__ = "category"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
 
     subcategories: Mapped[list["Subcategory"]] = relationship(back_populates="category")
 
@@ -20,9 +20,9 @@ class Category(Base):
 class Subcategory(Base):
     __tablename__ = "subcategory"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(nullable=False)
-    category_id: Mapped[int] = mapped_column(ForeignKey("category.id"))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    category_id: Mapped[int] = mapped_column(Integer, ForeignKey("category.id"))
 
     category: Mapped["Category"] = relationship(back_populates="subcategories")
     products: Mapped[list["Product"]] = relationship(back_populates="subcategory")
