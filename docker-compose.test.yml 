@@ -1,6 +1,6 @@
 services:
   web:
-    image: topoldanilo/backend:0.0.1
+    image: topolek/mame_care_box:0.0.1
     ports:
       - "9000:9000"
     env_file:
