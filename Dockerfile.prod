@@ -4,7 +4,7 @@ FROM python:3.11-slim
 # Встановлюємо робочу директорію
 WORKDIR /app
 
-# Копіюємо requirements.txt
+# Копіюємо requirements_dev.txt
 COPY requirements.txt .
 # Встановлюємо залежності та перевіряємо, що gunicorn встановлено
 RUN pip install --no-cache-dir -r requirements.txt && \

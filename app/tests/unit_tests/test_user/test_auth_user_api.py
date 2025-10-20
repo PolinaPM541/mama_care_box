@@ -3,18 +3,20 @@ from httpx import AsyncClient
 
 
 @pytest.mark.parametrize(
-    "email,password,status_code",
+    "name,phone_number,email,password,status_code",
     [
-        ("kot@pes.com", "kot0pes", 201),
-        ("kot@pes.com", "kot0pes", 400),
-        ("pes@pes.com", "pesokot", 201),
-        ("abvsda", "pesokot", 422),
+        ("user","380997121506","kot@pes.com", "kot0pes", 201),
+        ("user","380997121506","kot@pes.com", "kot0pes", 400),
+        ("pset","380783225610","pes@pes.com", "pesokot", 201),
+        ("swss","123456781190","abvsda", "pesokot", 422),
     ],
 )
-async def test_register_user(email, password, status_code, ac: AsyncClient):
+async def test_register_user(name,phone_number,email, password, status_code, ac: AsyncClient):
     response = await ac.post(
         "/auth/register",
         json={
+            "name":name,
+            "phone_number":phone_number,
             "email": email,
             "password": password,
         },
@@ -24,16 +26,18 @@ async def test_register_user(email, password, status_code, ac: AsyncClient):
 
 
 @pytest.mark.parametrize(
-    "email,password,status_code",
+    "name,phone_number,email,password,status_code",
     [
-        ("test@test.com", "test", 204),
+        ("user","380997121506","test@test.com", "test", 204),
     ],
 )
-async def test_login_user(email, password, status_code, ac: AsyncClient):
+async def test_login_user(name,phone_number,email, password, status_code, ac: AsyncClient):
     response = await ac.post(
         "/auth/cookie/login",
         data={
-            "username": email,
+            "name":name,
+            "phone_number":phone_number,
+            "email": email,
             "password": password,
         },
     )
