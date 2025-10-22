@@ -23,14 +23,17 @@ FastAPI-додаток для товарів для мам та немовлят
    JWT_LIFETIME_SECONDS=your_time
    DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/mama_care_box
    TEST_DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/test_mama_care_box
-   GOOGLE_CLIENT_ID=test_client_id
-   GOOGLE_CLIENT_SECRET=test_client_secret
+   GOOGLE_OAUTH2_CLIENT_ID=test_client_id
+   GOOGLE_OAUTH2_CLIENT_SECRET=test_client_secret
+   FACEBOOK_OAUTH2_CLIENT_ID=test_client_id
+   FACEBOOK_OAUTH2_CLIENT_SECRET=test_client_secret
    SECRET=your_jwt_secret_key
+
    ```
 
 3. Запустіть через Docker:
    ```bash
-   docker-compose up --build -d 
+   docker-compose up --build -d
    ```
 
 4. Відкрийте API: [http://localhost:9000/docs](http://localhost:9000/docs)
@@ -50,7 +53,7 @@ FastAPI-додаток для товарів для мам та немовлят
 mama_care_box/
 |   .env # Змінні середовища
 |   .env_dev # Змінні середовища
-|   .pre-commit-config.yaml # конфігуратор для рефакторінгу 
+|   .pre-commit-config.yaml # конфігуратор для рефакторінгу
 |   docker-compose.yml  # Docker Compose конфігурація
 |   Dockerfile # Docker образ
 |   main.py # Точка входу
@@ -61,10 +64,10 @@ mama_care_box/
 |   |   config.py # Конфігурація
 |   |   conftest.py # Конфіг для тестів
 |   |   database.py # Підключення к бд
-|   |   exceptions.py # особливі винятки 
+|   |   exceptions.py # особливі винятки
 |   |   router.py # шлях
-|   |   responses_api # коди та опис  для відповіді 
-|   |   
+|   |   responses_api # коди та опис  для відповіді
+|   |
 |   +---Basket
 |   |   |   dao.py # логика бд
 |   |   |   dependencies.py # Залежності для basket
@@ -72,7 +75,7 @@ mama_care_box/
 |   |   |   router.py # шлях
 |   |   |   schemas.py # Pydantic схема
 |   |   |
-|   |           
+|   |
 |   +---Categories
 |   |   |   dao.py # логика бд
 |   |   |   models.py # модель для бд
@@ -95,11 +98,11 @@ mama_care_box/
 |   |   |   mock_product.json
 |   |   |   mock_subcategory.json
 |   |   |   mock_users.json
-|   |   |   
+|   |   |
 |   |   +---integration_tests
 |   |   |   \---test_dao
 |   |   |       |   test_models_basket.py
-|   |   |               
+|   |   |
 |   |   +---unit_tests
 |   |      +---test_basket
 |   |     |   |   test_api_basket.py
@@ -109,7 +112,7 @@ mama_care_box/
 |   |     |   |   test_product_.py
 |   |     \---test_user
 |   |         |   test_auth_user_api.py
-|   |           
+|   |
     +---user
        |   auth.py # голова аутентифікація
        |   dao.py # логика бд
@@ -128,7 +131,7 @@ git clone https://github.com/PolinaPM541/mama_care_box.git
 cd mama_care_box
 
 # 2. Створення .env
-echo "  
+echo "
    MODE=your_mode
    COOKIE_MAX_AGE=your_time
    JWT_LIFETIME_SECONDS=your_time
@@ -137,6 +140,8 @@ echo "
    GOOGLE_CLIENT_ID=test_client_id
    GOOGLE_CLIENT_SECRET=test_client_secret
    SECRET=your_jwt_secret_key
+   FACEBOOK_OAUTH2_CLIENT_ID=test_client_id
+   FACEBOOK_OAUTH2_CLIENT_SECRET=test_client_secret
    " > .env
 
 # 3. Запуск

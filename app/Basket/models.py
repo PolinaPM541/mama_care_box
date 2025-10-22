@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import Computed, Date, Float, ForeignKey
+from sqlalchemy import Computed, Date, Float, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -9,8 +9,8 @@ from app.database import Base
 class Basket(Base):
     __tablename__ = "basket"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"), nullable=False)
 
     user: Mapped["Users"] = relationship(
         "Users", back_populates="baskets", uselist=False
@@ -22,10 +22,12 @@ class Basket(Base):
 class Order(Base):
     __tablename__ = "orders"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
-    basket_id: Mapped[int] = mapped_column(ForeignKey("basket.id"), nullable=False)
-    total_cost: Mapped[float] = mapped_column(nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"), nullable=False)
+    basket_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("basket.id"), nullable=False
+    )
+    total_cost: Mapped[float] = mapped_column(Float, nullable=False)
     created_at: Mapped[date] = mapped_column(Date, nullable=False)
 
     basket: Mapped["Basket"] = relationship(back_populates="orders")
