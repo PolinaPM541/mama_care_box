@@ -16,7 +16,7 @@ FastAPI-додаток для товарів для мам та немовлят
    cd mama_care_box
    ```
 
-2. Створіть `.env`:
+2. Скопіюйте `env_example` для свого проекту та введіть свої дані, приклад: 
    ```bash
    MODE=your_mode
    COOKIE_MAX_AGE=your_time
@@ -33,7 +33,7 @@ FastAPI-додаток для товарів для мам та немовлят
 
 3. Запустіть через Docker:
    ```bash
-   docker-compose up --build -d
+   docker-compose -f docker-compose.test.yml up --build -d
    ```
 
 4. Відкрийте API: [http://localhost:9000/docs](http://localhost:9000/docs)
@@ -145,7 +145,7 @@ echo "
    " > .env
 
 # 3. Запуск
-docker-compose up --build
+docker-compose -t docker-compose.test.yml  up --build
 
 # 4. Відкрити у браузері
 # http://localhost:9000/docs
