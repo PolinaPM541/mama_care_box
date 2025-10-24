@@ -1,5 +1,5 @@
 .env
-.env_dev
+.env-non-dev
 /venv/
 *__pycache__/
 venv/
