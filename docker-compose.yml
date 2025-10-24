@@ -2,11 +2,11 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - "9000:9000"
     env_file:
-      - .env_dev
+      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -23,7 +23,7 @@ services:
   db:
     image: postgres:16
     environment:
-        - .env_dev
+        - .env
     ports:
       - "5432:5432"
     volumes:
