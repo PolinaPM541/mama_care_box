@@ -1,25 +1,24 @@
-# Використовуємо легкий базовий образ Python 3.11
+
 FROM python:3.11-slim
 
-# Встановлюємо робочу директорію
+
 WORKDIR /app
 
-# Копіюємо requirements_dev.txt
-COPY requirements_dev.txt .
-# Встановлюємо залежності та перевіряємо, що gunicorn встановлено
-RUN pip install --no-cache-dir -r requirements_dev.txt
 
-# Копіюємо решту файлів проєкту
+COPY requirements_dev.txt .
+
+RUN pip install --no-cache-dir -r requirements_dev.txt && \
+    pip show gunicorn || { echo "gunicorn not installed"; exit 1; }
+
+
+
 COPY . .
 
-# Створюємо некритичного користувача для безпеки
-
-# Відкриваємо порт 9000 для FastAPI
 EXPOSE 9000
 
-# Додаємо перевірку здоров’я
+
 HEALTHCHECK --interval=30s --timeout=3s \
     CMD curl -f http://localhost:9000/docs || exit 1
 
-# Запускаємо gunicorn з Uvicorn для продакшену
+
 CMD ["gunicorn", "-w", "1", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:9000"]
