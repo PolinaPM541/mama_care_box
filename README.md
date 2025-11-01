@@ -145,7 +145,7 @@ echo "
    " > .env
 
 # 3. Запуск
-docker-compose -t docker-compose.test.yml  up --build
+docker-compose -f docker-compose.test.yml  up --build
 
 # 4. Відкрити у браузері
 # http://localhost:9000/docs
