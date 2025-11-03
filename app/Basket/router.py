@@ -52,7 +52,7 @@ async def get_basket(user: Users = Depends(current_user)) -> list[OrderItemRead]
             raise NotFoundHTTPException
         return basket
 
-    except Exception as e:
+    except Exception:
         raise UnexpectedHTTPException
 
 

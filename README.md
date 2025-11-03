@@ -16,7 +16,7 @@ FastAPI-додаток для товарів для мам та немовлят
    cd mama_care_box
    ```
 
-2. Скопіюйте `env_example` для свого проекту та введіть свої дані, приклад: 
+2. Скопіюйте `env_example` для свого проекту та введіть свої дані, приклад:
    ```bash
    MODE=your_mode
    COOKIE_MAX_AGE=your_time
