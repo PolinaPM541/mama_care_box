@@ -29,21 +29,18 @@ async def test_register_user(
 
 
 @pytest.mark.parametrize(
-    "name,phone_number,del_address,email,password,status_code",
+    "email,password,status_code",
     [
-        ("user", "+380501234567", "dniprovetrovsk", "kot@pes.com", "kot0pes", 204),
+        ("kot@pes.com", "kot0pes", 204),
     ],
 )
 async def test_login_user(
-    name, phone_number, del_address, email, password, status_code, ac: AsyncClient
+     email, password, status_code, ac: AsyncClient
 ):
     response = await ac.post(
         "/auth/cookie/login",
         data={
-            "name": name,
-            "phone_number": phone_number,
-            "del_address": del_address,
-            "username": email,
+            "email": email,
             "password": password,
         },
     )

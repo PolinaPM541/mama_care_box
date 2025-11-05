@@ -1,6 +1,6 @@
 services:
   web:
-    image: topolek/mame_care_box:0.0.3
+    image: topolek/mama_care_box:0.0.3
     ports:
       - "9000:9000"
     env_file:
