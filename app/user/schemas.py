@@ -1,33 +1,34 @@
+from typing import Optional
+
 from fastapi_users import schemas
-from pydantic import Field, EmailStr, ConfigDict
-from pydantic_extra_types.phone_numbers import PhoneNumber
+from pydantic import EmailStr, model_validator, ValidationError, Field
+
+from app.user.auth import fastapi_users
 
 
 class UserRead(schemas.BaseUser[int]):
+    email: Optional[EmailStr] = None
+    phone_number: Optional[str] = Field(None, min_length=8)
 
-    name: str = Field(min_length=2, max_length=50, pattern=r"^[a-zA-Z]+$")
-    phone_number: PhoneNumber = Field(
-        min_length=8,
-    )
-    del_address: str = Field(min_length=5)
+    @model_validator(mode='after')
+    def check_contact_info(self):
+        if not self.phone_number and not self.email:
+            raise ValidationError('Please provide phone number or email')
+
+        return self
 
 
 class UserCreate(schemas.BaseUserCreate):
+    email: Optional[EmailStr] = None
+    phone_number: Optional[str] = Field(None, min_length=8)
 
-    name: str = Field(min_length=2, max_length=50, pattern=r"^[a-zA-Z]+$")
-    phone_number: PhoneNumber = Field(
-        min_length=8,
-    )
-    del_address: str = Field(min_length=5)
+    @model_validator(mode='after')
+    def check_contact_info(self):
+        if not self.phone_number and not self.email:
+            raise ValidationError('Please provide phone number or email')
+
+        return self
 
 
 class UserUpdate(schemas.BaseUserUpdate, UserCreate):
     pass
-
-
-class UserLogin(schemas.BaseUser[int]):
-
-    email: EmailStr
-    password:str
-
-    model_config = ConfigDict(from_attributes=True)

@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="mama_care_box@localhost" uuid="3890d658-c864-4418-9cbd-8769a50d26ba">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/mama_care_box</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="test_mama_care_box@localhost" uuid="cfa7c48f-c906-49ae-ae33-4667b3b42488">
+    <data-source source="LOCAL" name="test_mama_care_box@localhost" uuid="5aa3abb7-efa6-4563-9074-27935f8917b0">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

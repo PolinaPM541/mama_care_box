@@ -22,12 +22,14 @@ class OAuthnAccount(SQLAlchemyBaseOAuthAccountTable[int], Base):
 class Users(SQLAlchemyBaseUserTable[int], Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[str] = mapped_column(String(length=320), unique=True, index=True, nullable=True)
     name: Mapped[str] = mapped_column(String, nullable=True)
     del_address: Mapped[str] = mapped_column(String, nullable=True)
-    phone_number: Mapped[str] = mapped_column(String, nullable=True)
+    phone_number: Mapped[str] = mapped_column(String, unique=True,nullable=True)
     oauth_accounts: Mapped[list[OAuthnAccount]] = relationship(
         "OAuthnAccount", lazy="joined"
     )
 
     orders: Mapped["Order"] = relationship("Order", back_populates="user")
     baskets: Mapped["Basket"] = relationship("Basket", back_populates="user")
+

@@ -9,6 +9,7 @@ from app.config import settings
 from app.user.dependencies import get_user_manager
 from app.user.models import Users
 
+
 cookie_transport = CookieTransport(
     cookie_name="auth_cookie", cookie_max_age=settings.COOKIE_MAX_AGE * 7
 )

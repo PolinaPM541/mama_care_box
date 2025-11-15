@@ -13,3 +13,4 @@ class UserDao(BaseDao):
     @classmethod
     async def get_user_db(cls, session: AsyncSession = Depends(get_async_session)):
         yield SQLAlchemyUserDatabase(session, Users, OAuthnAccount)
+
